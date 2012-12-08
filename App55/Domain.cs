@@ -104,6 +104,16 @@ namespace App55 {
                 this.phone = value;
             }
         }
+
+        public override bool  Equals(object obj) {
+            if(this.ID != null && obj != null && obj.GetType() == typeof(User)) return this.ID == ((User)obj).ID;
+ 	        return base.Equals(obj);
+        }
+
+        public override int GetHashCode() {
+            if(this.ID != null) return ID.GetHashCode();
+            return base.GetHashCode();
+        }
     }
 
     public sealed class Transaction {
@@ -196,6 +206,16 @@ namespace App55 {
             set {
                 this.commit = value;
             }
+        }
+
+        public override bool Equals(object obj) {
+            if(this.ID != null && obj != null && obj.GetType() == typeof(Transaction)) return this.ID == ((Transaction)obj).ID;
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode() {
+            if(this.ID != null) return ID.GetHashCode();
+            return base.GetHashCode();
         }
     }
 
@@ -351,6 +371,16 @@ namespace App55 {
             set {
                 this.issue = value;
             }
+        }
+
+        public override bool Equals(object obj) {
+            if(this.Token != null && obj != null && obj.GetType() == typeof(Card)) return this.Token == ((Card)obj).Token;
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode() {
+            if(this.Token != null) return Token.GetHashCode();
+            return base.GetHashCode();
         }
     }
 
