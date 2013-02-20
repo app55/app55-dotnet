@@ -73,7 +73,7 @@ namespace App55 {
                 }
             }
             foreach(KeyValuePair<string, string> entry in description) {
-                formData += "&" + Uri.EscapeDataString(entry.Key) + "=" + Uri.EscapeDataString(entry.Value);
+                formData += "&" + UriBuilder.Encode(entry.Key) + "=" + UriBuilder.Encode(entry.Value);
             }
             if(formData.Length > 0) formData = formData.Substring(1);
             return formData;
