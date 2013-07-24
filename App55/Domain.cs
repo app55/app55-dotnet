@@ -124,6 +124,7 @@ namespace App55 {
         private string code;
         private string authCode;
         private bool? commit;
+        private string type;
 
         public Transaction() {
 
@@ -196,6 +197,17 @@ namespace App55 {
             }
             set {
                 this.authCode = value;
+            }
+        }
+        public string Type
+        {
+            get
+            {
+                return this.type;
+            }
+            set
+            {
+                this.type = value;
             }
         }
 

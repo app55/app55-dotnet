@@ -280,7 +280,9 @@ namespace App55 {
                 string key = (string)entry.Key;
                 object value = entry.Value;
 
-                if(value == null || !properties.ContainsKey(key)) continue;
+                if (value == null || !properties.ContainsKey(key)) {
+                    continue;
+                }
 
                 if(value is Hashtable) {
                     if(properties[key].GetValue(o, null) == null)
