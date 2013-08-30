@@ -318,6 +318,7 @@ namespace App55 {
     public sealed class CardCreateRequest : Request<CardCreateResponse> {
         private User user;
         private Card card;
+        private String ipAddress;
 
         internal CardCreateRequest(User user, Card card) {
             this.user = user;
@@ -351,6 +352,16 @@ namespace App55 {
             }
             set {
                 this.card = value;
+            }
+        }
+
+        [PropertyName("ip_address")]
+        public String IPAddress {
+            get {
+                return this.ipAddress;
+            }
+            set {
+                this.ipAddress = value;
             }
         }
     }
@@ -497,6 +508,7 @@ namespace App55 {
         private User user;
         private Transaction transaction;
         private Card card;
+        private String ipAddress;
 
         public TransactionCreateRequest(User user, Card card, Transaction transaction) {
             this.user = user;
@@ -532,6 +544,16 @@ namespace App55 {
             }
             set {
                 this.transaction = value;
+            }
+        }
+
+        [PropertyName("ip_address")]
+        public String IPAddress {
+            get {
+                return this.ipAddress;
+            }
+            set {
+                this.ipAddress = value;
             }
         }
 
