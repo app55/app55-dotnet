@@ -12,7 +12,7 @@ using System.ComponentModel;
 namespace App55 {
     [EditorBrowsable(EditorBrowsableState.Never)]
     public abstract class Message {
- 
+        protected IDictionary<string, string> additionalFields = new Dictionary<string, string>();
         private Gateway gateway;
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -71,6 +71,9 @@ namespace App55 {
                     description.Remove("sig");
                     description.Add("sig", ToSignature(true));
                 }
+            }
+            foreach(KeyValuePair<string, string> entry in this.additionalFields) {
+                description.Add(entry.Key, entry.Value);
             }
             foreach(KeyValuePair<string, string> entry in description) {
                 formData += "&" + UriBuilder.Encode(entry.Key) + "=" + UriBuilder.Encode(entry.Value);
@@ -233,8 +236,13 @@ namespace App55 {
         private string signature;
         private string timestamp;
 
-        internal Response() {
+        protected Response() {
 
+        }
+
+        protected Response(Gateway gateway, Hashtable ht) {
+            this.Gateway = gateway;
+            this.Populate(ht);
         }
 
         public override string Signature {
@@ -262,7 +270,36 @@ namespace App55 {
             }
         }
 
-        internal void Populate(Hashtable hashtable, object o = null) {
+        [IgnoreProperty]
+        public string ExpectedSignature {
+            get {
+                return ToSignature();
+            }
+        }
+
+        private void PopulateAdditional(Hashtable hashtable, string prefix = "") {
+            foreach(DictionaryEntry entry in hashtable) {
+                string key = (string)entry.Key;
+                object value = entry.Value;
+
+                if(value != null) {
+                    if(value is Hashtable) {
+                        PopulateAdditional((Hashtable)value, prefix + key + ".");
+                    } else if(value is ArrayList) {
+                        int i = 0;
+                        foreach(object arrayItem in ((ArrayList)value)) {
+                            if(arrayItem is Hashtable) {
+                                PopulateAdditional((Hashtable)arrayItem, prefix + key + "." + i++ + ".");
+                            } else {
+                                additionalFields.Add(prefix + key + "." + i++, arrayItem.ToString());                            
+                            }
+                        }
+                    } else additionalFields.Add(prefix + key, value.ToString());
+                }
+            }
+        }
+
+        internal void Populate(Hashtable hashtable, object o = null, string prefix = "") {
             if(o == null) o = this;
 
             IDictionary<string, PropertyInfo> properties = new Dictionary<string, PropertyInfo>();
@@ -281,22 +318,38 @@ namespace App55 {
                 object value = entry.Value;
 
                 if (value == null || !properties.ContainsKey(key)) {
+                    if(value != null) {
+                        if(value is Hashtable) {
+                            PopulateAdditional((Hashtable)value, prefix + key + ".");
+                        } else if(value is ArrayList) {
+                            int i = 0;
+                            foreach(object arrayItem in ((ArrayList)value)) {
+                                if(arrayItem is Hashtable) {
+                                    PopulateAdditional((Hashtable)arrayItem, prefix + key + "." + i++ + ".");
+                                } else {
+                                    additionalFields.Add(prefix + key + "." + i++, arrayItem.ToString());                            
+                                }
+                            }
+                        };
+                        additionalFields.Add(prefix + key, value.ToString());
+                    }
                     continue;
                 }
 
                 if(value is Hashtable) {
                     if(properties[key].GetValue(o, null) == null)
                         properties[key].SetValue(o, Activator.CreateInstance(properties[key].PropertyType), null);
-                    Populate((Hashtable)value, properties[key].GetValue(o, null));
+                    Populate((Hashtable)value, properties[key].GetValue(o, null), prefix + key + ".");
                 } else if(value is ArrayList) {
                     if(properties[key].PropertyType.GetGenericTypeDefinition() == typeof(IList<>)) {
                         Type argument = properties[key].PropertyType.GetGenericArguments()[0];
                         Type generic = typeof(List<>).MakeGenericType(new Type[] { argument });
                         IList list = (IList)Activator.CreateInstance(generic);
+                        int i = 0;
                         foreach(object arrayItem in ((ArrayList)value)) {
                             if(arrayItem is Hashtable) {
                                 object listItem = Activator.CreateInstance(argument);
-                                Populate((Hashtable)arrayItem, listItem);
+                                Populate((Hashtable)arrayItem, listItem, prefix + key + "." + i++ + ".");
                                 list.Add(listItem);
                             } else {
                                 list.Add(arrayItem);

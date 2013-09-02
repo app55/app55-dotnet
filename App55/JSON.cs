@@ -16,7 +16,7 @@ namespace App55
 	/// All numbers are parsed to doubles.
 	/// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-	internal class JSON
+	public class JSON
 	{
 		private const int TOKEN_NONE = 0;
         private const int TOKEN_CURLY_OPEN = 1;
