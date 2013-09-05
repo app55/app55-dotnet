@@ -3,6 +3,8 @@ App55 .NET Library
 
 https://www.app55.com/docs
 
+To run NUnit tests download NUnit from http://launchpad.net/nunitv2/2.6.2/2.6.2/+download/NUnit-2.6.2.msi and install in the default location.
+
 
 Revision History:
 

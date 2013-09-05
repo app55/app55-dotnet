@@ -19,11 +19,11 @@ namespace App55.Test {
         public void AdditionalPropertiesTest() {
             Gateway gateway = new Gateway(Environment.Development, "API_KEY", "API_SECRET");
 
-            string json = "{\"a\":0,\"b\":{\"c\":{\"d\":0}},\"sig\":\"FwORZsveXVAf1M14JuCiXHy1y7s=\",\"ts\":\"TS\"}";
+            string json = "{\"a\":0,\"b\":{\"c\":{\"d\":0}},\"sig\":\"AekURjhSnDivoHlgEdc0m_jBnI0=\",\"ts\":\"TS\"}";
             Response response = new TestResponse(gateway, json);
             Assert.True(response.IsValidSignature, response.ExpectedSignature);
 
-            json = "{\"a\":0,\"b\":[0,{\"d\":0}],\"sig\":\"Fzib2BP3VJNdTRhX-Jbbgi3zthc=\",\"ts\":\"TS\"}";
+            json = "{\"a\":0,\"b\":[0,{\"d\":0}],\"sig\":\"Wd24z5rhDUcm63JqpaaSuUqfy4U=\",\"ts\":\"TS\"}";
             response = new TestResponse(gateway, json);
             Assert.True(response.IsValidSignature, response.ExpectedSignature);
         }

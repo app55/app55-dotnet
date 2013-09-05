@@ -330,8 +330,7 @@ namespace App55 {
                                     additionalFields.Add(prefix + key + "." + i++, arrayItem.ToString());                            
                                 }
                             }
-                        };
-                        additionalFields.Add(prefix + key, value.ToString());
+                        } else additionalFields.Add(prefix + key, value.ToString());
                     }
                     continue;
                 }
