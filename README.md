@@ -17,3 +17,5 @@ Revision History:
 		Added property CardCreateRequest.IPAddress and TransactionCreateRequest.IPAddress for the new App55 Gateway in App55-2.8.2
 
 0.8.6 Response class now handles fields not strongly types
+
+0.8.7 Now supports scheduling API.
