@@ -371,10 +371,16 @@ namespace App55 {
         private User user;
         private Card card;
         private String ipAddress;
+        private bool? threeds;
 
-        internal CardCreateRequest(User user, Card card) {
+        internal CardCreateRequest(User user, Card card) : this(user, card, null) {
+            
+        }
+
+        internal CardCreateRequest(User user, Card card, bool? threeds) {
             this.user = user;
             this.card = card;
+            this.threeds = threeds;
         }
 
         internal override string HttpEndpoint {
@@ -416,11 +422,22 @@ namespace App55 {
                 this.ipAddress = value;
             }
         }
+
+        [PropertyName("threeds")]
+        public bool? ThreeDSecure {
+            get {
+                return this.threeds;
+            }
+            set {
+                this.threeds = value;
+            }
+        }
     }
 
     public sealed class CardCreateResponse : Response {
 
         private Card card;
+        private String threeds;
 
         public Card Card {
             get {
@@ -428,6 +445,16 @@ namespace App55 {
             }
             internal set {
                 this.card = value;
+            }
+        }
+
+        [PropertyName("threeds")]
+        public String ThreeDSecureRedirectURL {
+            get {
+                return this.threeds;
+            }
+            internal set {
+                this.threeds = value;
             }
         }
     }
@@ -545,6 +572,7 @@ namespace App55 {
 
     public sealed class TransactionCommitResponse : Response {
         private Transaction transaction;
+        private bool? threeds;
 
         public Transaction Transaction {
             get {
@@ -554,6 +582,16 @@ namespace App55 {
                 this.transaction = value;
             }
         }
+
+        [PropertyName("threeds")]
+        public bool? ThreeDSecure {
+            get {
+                return threeds;
+            }
+            internal set {
+                this.threeds = value;
+            }
+        }
     }
 
     public sealed class TransactionCreateRequest : Request<TransactionCreateResponse> {
@@ -561,11 +599,17 @@ namespace App55 {
         private Transaction transaction;
         private Card card;
         private String ipAddress;
+        private bool? threeds;
 
-        public TransactionCreateRequest(User user, Card card, Transaction transaction) {
+        public TransactionCreateRequest(User user, Card card, Transaction transaction, bool? threeds) {
             this.user = user;
             this.card = card;
             this.transaction = transaction;
+            this.threeds = threeds;
+        }
+
+        public TransactionCreateRequest(User user, Card card, Transaction transaction) : this(user, card, transaction, null) {
+           
         }
 
         public TransactionCreateRequest(Card card, Transaction transaction) : this(null, card, transaction) {
@@ -609,6 +653,16 @@ namespace App55 {
             }
         }
 
+        [PropertyName("threeds")]
+        internal bool? ThreeDSecure {
+            get {
+                return threeds;
+            }
+            set {
+                threeds = value;
+            }
+        }
+
         internal override string HttpEndpoint {
             get {
                 return this.Gateway.Environment.BaseUrl + "/transaction";
@@ -624,6 +678,7 @@ namespace App55 {
 
     public sealed class TransactionCreateResponse : Response {
         private Transaction transaction;
+        private String threeds;
 
         public Transaction Transaction {
             get {
@@ -631,6 +686,16 @@ namespace App55 {
             }
             internal set {
                 this.transaction = value;
+            }
+        }
+
+        [PropertyName("threeds")]
+        public String ThreeDSecureRedirectURL {
+            get {
+                return this.threeds;
+            }
+            internal set {
+                this.threeds = value;
             }
         }
     }

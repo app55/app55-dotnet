@@ -59,6 +59,12 @@ namespace App55 {
             return request;
         }
 
+        public CardCreateRequest CreateCard(User user, Card card, bool threeds) {
+            CardCreateRequest request = new CardCreateRequest(user, card, threeds);
+            request.Gateway = this;
+            return request;
+        }
+
         public CardDeleteRequest DeleteCard(User user, Card card) {
             CardDeleteRequest request = new CardDeleteRequest(user, card);
             request.Gateway = this;
@@ -73,6 +79,12 @@ namespace App55 {
 
         public TransactionCreateRequest CreateTransaction(User user, Card card, Transaction transaction) {
             TransactionCreateRequest request = new TransactionCreateRequest(user, card, transaction);
+            request.Gateway = this;
+            return request;
+        }
+
+        public TransactionCreateRequest CreateTransaction(User user, Card card, Transaction transaction, bool threeds) {
+            TransactionCreateRequest request = new TransactionCreateRequest(user, card, transaction, threeds);
             request.Gateway = this;
             return request;
         }
